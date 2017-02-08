@@ -3,81 +3,11 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.min.js"></script>
-    <script>
-        'use strict';
-
-        var app = angular.module('budgeting', []);
-
-        app.controller('MainController', function($scope) {
-            //Taxes
-            $scope.federalTax = 18;
-            $scope.stateTax = 6;
-
-            //Income
-            $scope.netIncome = 0;
-            $scope.incomes = [
-                {
-                    source: null,
-                    value: null
-                }
-            ];
-            $scope.totalIncome = 0;
-            $scope.calculateTotalIncome = function() {
-                $scope.netIncome = 0;
-                $scope.totalIncome = 0;
-                var fullTaxRate = ($scope.federalTax + $scope.stateTax) / 100;
-                console.log(fullTaxRate);
-                for (var i = 0; i < $scope.incomes.length; i++) {
-                    $scope.totalIncome += $scope.incomes[i].value;
-                    if (i == ($scope.incomes.length - 1)) {
-                        $scope.netIncome = $scope.totalIncome - ($scope.totalIncome * fullTaxRate);
-                        $scope.expenses = {
-                            housing: Math.floor(($scope.netIncome / 12) * .25),
-                            utilities: Math.floor(($scope.netIncome / 12) * .05),
-                            transportation: Math.floor(($scope.netIncome / 12) * .10),
-                            food: Math.floor(($scope.netIncome / 12) * .10),
-                            savings: Math.floor(($scope.netIncome / 12) * .10),
-                            charity: Math.floor(($scope.netIncome / 12) * .10),
-                            clothing: Math.floor(($scope.netIncome / 12) * .05),
-                            medical: Math.floor(($scope.netIncome / 12) * .05),
-                            insurance: Math.floor(($scope.netIncome / 12) * .10),
-                            personal: Math.floor(($scope.netIncome / 12) * .05),
-                            recreation: Math.floor(($scope.netIncome / 12) * .05)
-                        };
-                    }
-                }
-            };
-
-            $scope.addIncome = function() {
-                $scope.incomes.push(
-                        {
-                            source: null,
-                            value: null
-                        }
-                );
-            };
-
-            //Expenses
-            $scope.expenses = {
-                housing: 0,
-                utilities: 0,
-                transportation: 0,
-                food: 0,
-                savings: 0,
-                charity: 0,
-                clothing: 0,
-                medical: 0,
-                insurance: 0,
-                personal: 0,
-                recreation: 0
-            };
-
-        });
-    </script>
+    <script src="app.js"></script>
     <title>Budget Generator</title>
 </head>
 <body ng-app="budgeting" ng-controller="MainController">
-<div class="ui container">
+<div class="ui container" style="padding-top: 50px;">
     <h1>Budget Generator</h1>
     <p>
         This website offers a quick and simple way for people to calculate their budget.
@@ -95,30 +25,30 @@
                     </div>
                     <div class="field">
                         <label>Source</label>
-                        <input placeholder="Income 1" type="text" ng-model="incomes[$index].source" />
+                        <input placeholder="ex. &quot;Dave's Job&quot;" type="text" ng-model="incomes[$index].source" />
                     </div>
                     <button style="margin-top: 20px; margin-bottom: 16px;"
-                            class="ui small negative button"
+                            class="ui tiny negative button"
                             ng-click="incomes.splice($index, 1)"
                             ng-disabled="$index == 0 && incomes.length == 1">
                         <i class="trash can icon"></i>
                     </button>
                 </div>
-                <button class="ui teal button" ng-click="addIncome()">
+                <button class="ui teal tiny button" ng-click="addIncome()">
                     <i class="plus icon"></i>Add income
                 </button>
                 <h2>Taxes</h2>
                 <div class="two fields">
                     <div class="field">
-                        <label>Federal income tax %</label>
+                        <label>Federal taxes (%)</label>
                         <input type="number" placeholder="18%" ng-model="federalTax" />
                     </div>
                     <div class="field">
-                        <label>State income tax %</label>
+                        <label>State tax (%)</label>
                         <input type="number" placeholder="7%" ng-model="stateTax" />
                     </div>
                 </div>
-                <button class="ui teal button" type="submit" ng-click="calculateTotalIncome()">
+                <button class="ui teal massive button" type="submit" ng-click="calculateTotalIncome()">
                     Calculate
                 </button>
             </div>
